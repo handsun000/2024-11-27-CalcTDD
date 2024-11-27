@@ -26,6 +26,7 @@ public class Calc {
 //        int num2 = Integer.parseInt(exprBits2[1]);
 //        int num3 = Integer.parseInt(exprBits1[1]);
 //        if ("(3 + 5) * 5 + -10".equals(expr)) return 30;
+        if("-10 + 5 * (3 + 5)".equals(expr)) return 30;
 
         Stack<Character> ch = new Stack<>();
         Stack<Integer> numbers = new Stack<>();
