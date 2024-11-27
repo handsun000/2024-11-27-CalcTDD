@@ -32,6 +32,8 @@ public class Calc {
         List<Character> ch = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>();
         List<Character> cals = new ArrayList<>();
+        List<Character> calsFirst = new ArrayList<>();
+        boolean flag = false;
 
         StringBuilder number = new StringBuilder();
 
@@ -39,13 +41,18 @@ public class Calc {
             char e = expr.charAt(i);
             if (e == ' ') continue;
 
-            if (e == '(') ch.add(e);
+            if (e == '(') {
+                ch.add(e);
+                flag = true;
+            }
             else if (e == '+' || e == '*') {
                 if (!number.isEmpty()) {
                     numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
                 }
-                cals.add(e);
+                if (flag) calsFirst.add(e);
+                else cals.add(e);
+                
             } else if (e == ')') {
                 if (ch.getLast() == '(') {
                     if (!number.isEmpty()) {
@@ -53,7 +60,9 @@ public class Calc {
                         number = new StringBuilder();
                     }
                     ch.removeLast();
-                    calculator(numbers, cals.removeLast(), -1);
+                    machine(calsFirst, numbers);
+
+                    if (ch.isEmpty()) flag = false;
                 }
             } else {
                 number.append(e);
@@ -64,6 +73,12 @@ public class Calc {
             }
         }
 
+        machine(cals, numbers);
+
+        return numbers.removeLast();
+    }
+
+    private static void machine(List<Character> cals, List<Integer> numbers) {
         while (!cals.isEmpty()) {
             if (cals.contains('*')) {
                 int index = cals.indexOf('*');
@@ -73,8 +88,6 @@ public class Calc {
                 calculator(numbers, cals.removeLast(), -1);
             }
         }
-
-        return numbers.removeLast();
     }
 
     private static void calculator(List<Integer> numbers, char cal, int index) {
