@@ -1,6 +1,7 @@
 package com.ll;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Calc {
     public static int run1(String expr) {
@@ -26,11 +27,11 @@ public class Calc {
 //        int num2 = Integer.parseInt(exprBits2[1]);
 //        int num3 = Integer.parseInt(exprBits1[1]);
 //        if ("(3 + 5) * 5 + -10".equals(expr)) return 30;
-        if("-10 + 5 * (3 + 5)".equals(expr)) return 30;
+//        if("-10 + 5 * (3 + 5)".equals(expr)) return 30;
 
-        Stack<Character> ch = new Stack<>();
-        Stack<Integer> numbers = new Stack<>();
-        Stack<Character> cals = new Stack<>();
+        List<Character> ch = new ArrayList<>();
+        List<Integer> numbers = new ArrayList<>();
+        List<Character> cals = new ArrayList<>();
 
         StringBuilder number = new StringBuilder();
 
@@ -38,46 +39,48 @@ public class Calc {
             char e = expr.charAt(i);
             if (e == ' ') continue;
 
-            if (e == '(') ch.push(e);
+            if (e == '(') ch.add(e);
             else if (e == '+' || e == '*') {
                 if (!number.isEmpty()) {
-                    numbers.push(Integer.parseInt(number.toString()));
+                    numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
-                    if (numbers.size() > 1 && !cals.isEmpty()) calculator(numbers, cals);
                 }
-                cals.push(e);
-            }
-            else if (e == ')') {
-                if (ch.peek() == '(') {
+                cals.add(e);
+            } else if (e == ')') {
+                if (ch.getLast() == '(') {
                     if (!number.isEmpty()) {
-                        numbers.push(Integer.parseInt(number.toString()));
+                        numbers.add(Integer.parseInt(number.toString()));
                         number = new StringBuilder();
                     }
-                    ch.pop();
-                    calculator(numbers, cals);
+                    ch.removeLast();
+                    calculator(numbers, cals.removeLast(), -1);
                 }
-            }
-            else {
+            } else {
                 number.append(e);
             }
 
-            if (i == expr.length()-1 && (!number.isEmpty())) {
-                numbers.push(Integer.parseInt(number.toString()));
+            if (i == expr.length() - 1 && (!number.isEmpty())) {
+                numbers.add(Integer.parseInt(number.toString()));
             }
         }
 
-        while(!cals.isEmpty()) {
-            calculator(numbers, cals);
+        while (!cals.isEmpty()) {
+            if (cals.contains('*')) {
+                int index = cals.indexOf('*');
+                calculator(numbers, cals.remove(index), index);
+            }
+
+            calculator(numbers, cals.removeLast(), -1);
         }
 
-        return numbers.pop();
+        return numbers.removeLast();
     }
 
-    private static void calculator(Stack<Integer> numbers, Stack<Character> cals) {
-        int num1 = numbers.pop();
-        int num2 = numbers.pop();
-        char cal = cals.pop();
-        if (cal == '+') numbers.push(num1 + num2);
-        else if (cal == '*') numbers.push(num1 * num2);
+    private static void calculator(List<Integer> numbers, char cal, int index) {
+        int num1 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
+        int num2 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
+
+        if (cal == '+') numbers.add(num1 + num2);
+        else if (cal == '*') numbers.add(num1 * num2);
     }
 }
