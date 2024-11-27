@@ -20,7 +20,7 @@ public class Calc {
 
         int num1 = Integer.parseInt(exprBits2[0]);
         int num2 = Integer.parseInt(exprBits2[1]);
-        int num3 = Integer.parseInt(exprBits2[1]);
+        int num3 = Integer.parseInt(exprBits1[1]);
 
         return (num1+num2)*num3;
     }
