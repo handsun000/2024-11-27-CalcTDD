@@ -63,4 +63,11 @@ public class CalcTest {
 
         assertThat(300).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("10 * (-10 + 5 * (3 + 5)) = 300")
+    public void t9() {
+        int rs = Calc.run2("10 * (-10 + 5 * (3 + 5))");
+
+        assertThat(300).isEqualTo(rs);
+    }
 }
