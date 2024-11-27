@@ -14,4 +14,11 @@ public class CalcTest {
 
         assertThat(8).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("(3 + 5) * 5 = 40")
+    public void t2() {
+        int rs = Calc.run2("(3 + 5) * 5");
+
+        assertThat(40).isEqualTo(rs);
+    }
 }
