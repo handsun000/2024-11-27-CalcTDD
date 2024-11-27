@@ -69,8 +69,9 @@ public class Calc {
                 int index = cals.indexOf('*');
                 calculator(numbers, cals.remove(index), index);
             }
-
-            calculator(numbers, cals.removeLast(), -1);
+            else {
+                calculator(numbers, cals.removeLast(), -1);
+            }
         }
 
         return numbers.removeLast();
