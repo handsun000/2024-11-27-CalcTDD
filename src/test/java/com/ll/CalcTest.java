@@ -49,4 +49,11 @@ public class CalcTest {
 
         assertThat(30).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("-10 + 5 * (3 + 5) = 30")
+    public void t7() {
+        int rs = Calc.run2("-10 + 5 * (3 + 5)");
+
+        assertThat(30).isEqualTo(rs);
+    }
 }

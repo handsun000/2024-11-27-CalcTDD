@@ -25,7 +25,7 @@ public class Calc {
 //        int num1 = Integer.parseInt(exprBits2[0]);
 //        int num2 = Integer.parseInt(exprBits2[1]);
 //        int num3 = Integer.parseInt(exprBits1[1]);
-        if ("(3 + 5) * 5 + -10".equals(expr)) return 30;
+//        if ("(3 + 5) * 5 + -10".equals(expr)) return 30;
 
         Stack<Character> ch = new Stack<>();
         Stack<Integer> numbers = new Stack<>();
@@ -39,11 +39,12 @@ public class Calc {
 
             if (e == '(') ch.push(e);
             else if (e == '+' || e == '*') {
-                cals.push(e);
                 if (!number.isEmpty()) {
                     numbers.push(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
+                    if (numbers.size() > 1 && !cals.isEmpty()) calculator(numbers, cals);
                 }
+                cals.push(e);
             }
             else if (e == ')') {
                 if (ch.peek() == '(') {
