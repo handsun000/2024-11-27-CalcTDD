@@ -91,4 +91,11 @@ public class CalcTest {
 
         assertThat(50).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("10 * (-10 + 5 * (-5 + 8)) = 50")
+    public void t13() {
+        int rs = Calc.run2("10 * (-10 + 5 * (-5 + 8))");
+
+        assertThat(50).isEqualTo(rs);
+    }
 }
