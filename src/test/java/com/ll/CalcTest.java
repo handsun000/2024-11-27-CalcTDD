@@ -112,4 +112,11 @@ public class CalcTest {
 
         assertThat(10).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 = 60")
+    public void t16() {
+        int rs = Calc.run2("((3 + 5) * 5 + -10) * 10 / 5");
+
+        assertThat(60).isEqualTo(rs);
+    }
 }

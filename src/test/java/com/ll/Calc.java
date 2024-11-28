@@ -84,17 +84,20 @@ public class Calc {
     private static void machine(List<Character> operators, List<Integer> numbers, int start) {
         for (int i = start; i < operators.size(); i++) {
             if (operators.get(i) == '*' || operators.get(i) == '/') {
-                int result = calculator(numbers.remove(i), numbers.remove(i), operators.remove(i));
-                numbers.add(i, result);
-                i--;
+                i = getI(operators, numbers, i);
             }
         }
 
         for (int i = start; i < operators.size(); i++) {
-            int result = calculator(numbers.remove(i), numbers.remove(i), operators.remove(i));
-            numbers.add(i, result);
-            i --;
+            i = getI(operators, numbers, i);
         }
+    }
+
+    private static int getI(List<Character> operators, List<Integer> numbers, int i) {
+        int result = calculator(numbers.remove(i), numbers.remove(i), operators.remove(i));
+        numbers.add(i, result);
+        i--;
+        return i;
     }
 
     private static int calculator(int num1, int num2, char operator) {
