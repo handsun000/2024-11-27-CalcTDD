@@ -54,7 +54,7 @@ public class Calc {
                     numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
                 }
-                machine2(operators, numbers, index.pop());
+                machine(operators, numbers, index.pop());
 
             } else {
                 number.append(e);
@@ -65,24 +65,9 @@ public class Calc {
             }
         }
 
-        machine2(operators, numbers, 0);
+        machine(operators, numbers, 0);
 
         return numbers.removeLast();
-    }
-
-    private static void machine2(List<Character> operators, List<Integer> numbers, int start) {
-        if (start >= operators.size()) return;
-        if (operators.get(start) == '*' || operators.get(start) == '/') {
-            numbers.add(start, calculator(numbers.remove(start), numbers.remove(start), operators.remove(start)));
-            machine2(operators, numbers, start);
-        }
-        else {
-            machine2(operators, numbers, start+1);
-            if (start < operators.size()) {
-                numbers.add(start, calculator(numbers.remove(start), numbers.remove(start), operators.remove(start)));
-                machine2(operators, numbers, start);
-            }
-        }
     }
 
     private static void machine(List<Character> operators, List<Integer> numbers, int start) {
