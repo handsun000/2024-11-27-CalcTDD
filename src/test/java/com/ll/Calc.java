@@ -62,7 +62,7 @@ public class Calc {
                 index.push(numbers.size());
                 flag = true;
             }
-            else if (e == '+' || e == '*' || e == '-') {
+            else if (e == '+' || e == '*' || e == '-' || e == '/') {
                 if (!number.isEmpty()) {
                     numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
@@ -116,5 +116,6 @@ public class Calc {
         if (cal == '+') numbers.add(num2 + num1);
         else if (cal == '*') numbers.add(num2 * num1);
         else if (cal == '-') numbers.add(num2 - num1);
+        else if (cal == '/') numbers.add(num2/num1);
     }
 }
