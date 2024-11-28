@@ -70,4 +70,11 @@ public class CalcTest {
 
         assertThat(300).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("5 - 3 = 2")
+    public void t10() {
+        int rs = Calc.run2("5 - 3");
+
+        assertThat(2).isEqualTo(rs);
+    }
 }
