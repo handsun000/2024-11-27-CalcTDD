@@ -30,13 +30,10 @@ public class Calc {
 //        if ("(3 + 5) * 5 + -10".equals(expr)) return 30;
 //        if("-10 + 5 * (3 + 5)".equals(expr)) return 30;
 
-        List<Character> ch = new ArrayList<>();
+        List<Character> operators = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>();
-        List<Character> cals = new ArrayList<>();
-        List<Character> calsFirst = new ArrayList<>();
-        List<List<Character>> listCal = new ArrayList<>();
         Stack<Integer> index = new Stack<>();
-        boolean flag = false;
+
         boolean minus = false;
 
         StringBuilder number = new StringBuilder();
@@ -50,39 +47,26 @@ public class Calc {
             if (minus && Character.isDigit(e)) {
                 number.append("-").append(e);
                 minus = false;
-                if (flag) calsFirst.removeLast();
-                else cals.removeLast();
+                operators.removeLast();
                 continue;
             }
 
             if (e == '(') {
-                ch.add(e);
-                calsFirst = new ArrayList<>();
-                listCal.add(calsFirst);
                 index.push(numbers.size());
-                flag = true;
-            }
-            else if (e == '+' || e == '*' || e == '-' || e == '/') {
+            } else if (e == '+' || e == '*' || e == '-' || e == '/') {
                 if (!number.isEmpty()) {
                     numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
                 }
                 if (e == '-') minus = true;
-                if (flag) calsFirst.add(e);
-                else cals.add(e);
-                
+                operators.add(e);
             } else if (e == ')') {
-                if (ch.getLast() == '(') {
-                    if (!number.isEmpty()) {
-                        numbers.add(Integer.parseInt(number.toString()));
-                        number = new StringBuilder();
-                    }
-                    ch.removeLast();
-                    machine(listCal.removeLast(), numbers, index.pop());
-                    if (!listCal.isEmpty()) calsFirst = listCal.getLast();
-
-                    if (ch.isEmpty()) flag = false;
+                if (!number.isEmpty()) {
+                    numbers.add(Integer.parseInt(number.toString()));
+                    number = new StringBuilder();
                 }
+                machine(operators, numbers, index.pop());
+
             } else {
                 number.append(e);
             }
@@ -92,30 +76,34 @@ public class Calc {
             }
         }
 
-        machine(cals, numbers, 0);
+        machine(operators, numbers, 0);
 
         return numbers.removeLast();
     }
 
-    private static void machine(List<Character> cals, List<Integer> numbers, int st) {
-        while (!cals.isEmpty()) {
-            if (cals.contains('*')) {
-                int index = cals.indexOf('*');
-                calculator(numbers, cals.remove(index), st+index);
+    private static void machine(List<Character> operators, List<Integer> numbers, int start) {
+        for (int i = start; i < operators.size(); i++) {
+            if (operators.get(i) == '*' || operators.get(i) == '/') {
+                int result = calculator(numbers.remove(i), numbers.remove(i), operators.remove(i));
+                numbers.add(i, result);
+                i--;
             }
-            else {
-                calculator(numbers, cals.removeLast(), -1);
-            }
+        }
+
+        for (int i = start; i < operators.size(); i++) {
+            int result = calculator(numbers.remove(i), numbers.remove(i), operators.remove(i));
+            numbers.add(i, result);
+            i --;
         }
     }
 
-    private static void calculator(List<Integer> numbers, char cal, int index) {
-        int num1 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
-        int num2 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
-
-        if (cal == '+') numbers.add(num2 + num1);
-        else if (cal == '*') numbers.add(num2 * num1);
-        else if (cal == '-') numbers.add(num2 - num1);
-        else if (cal == '/') numbers.add(num2/num1);
+    private static int calculator(int num1, int num2, char operator) {
+        return switch (operator) {
+            case '+' -> num1 + num2;
+            case '-' -> num1 - num2;
+            case '*' -> num1 * num2;
+            case '/' -> num1 / num2;
+            default -> -1;
+        };
     }
 }
