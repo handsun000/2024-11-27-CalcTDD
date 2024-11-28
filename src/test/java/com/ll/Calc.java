@@ -2,6 +2,7 @@ package com.ll;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Calc {
     public static int run1(String expr) {
@@ -33,6 +34,8 @@ public class Calc {
         List<Integer> numbers = new ArrayList<>();
         List<Character> cals = new ArrayList<>();
         List<Character> calsFirst = new ArrayList<>();
+        List<List<Character>> listCal = new ArrayList<>();
+        Stack<Integer> index = new Stack<>();
         boolean flag = false;
 
         StringBuilder number = new StringBuilder();
@@ -43,6 +46,9 @@ public class Calc {
 
             if (e == '(') {
                 ch.add(e);
+                calsFirst = new ArrayList<>();
+                listCal.add(calsFirst);
+                index.push(numbers.size());
                 flag = true;
             }
             else if (e == '+' || e == '*') {
@@ -60,7 +66,8 @@ public class Calc {
                         number = new StringBuilder();
                     }
                     ch.removeLast();
-                    machine(calsFirst, numbers);
+                    machine(listCal.removeLast(), numbers, index.pop());
+                    if (!listCal.isEmpty()) calsFirst = listCal.getLast();
 
                     if (ch.isEmpty()) flag = false;
                 }
@@ -73,16 +80,16 @@ public class Calc {
             }
         }
 
-        machine(cals, numbers);
+        machine(cals, numbers, 0);
 
         return numbers.removeLast();
     }
 
-    private static void machine(List<Character> cals, List<Integer> numbers) {
+    private static void machine(List<Character> cals, List<Integer> numbers, int st) {
         while (!cals.isEmpty()) {
             if (cals.contains('*')) {
                 int index = cals.indexOf('*');
-                calculator(numbers, cals.remove(index), index);
+                calculator(numbers, cals.remove(index), st+index);
             }
             else {
                 calculator(numbers, cals.removeLast(), -1);
