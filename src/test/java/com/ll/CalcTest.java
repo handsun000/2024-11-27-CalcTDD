@@ -99,10 +99,17 @@ public class CalcTest {
         assertThat(50).isEqualTo(rs);
     }
     @Test
-    @DisplayName("10 / 5")
+    @DisplayName("10 / 5 = 2")
     public void t14() {
         int rs = Calc.run2("10 / 5");
 
         assertThat(2).isEqualTo(rs);
+    }
+    @Test
+    @DisplayName("5 * 10 / 5 = 10")
+    public void t15() {
+        int rs = Calc.run2("5 * 10 / 5");
+
+        assertThat(10).isEqualTo(rs);
     }
 }
