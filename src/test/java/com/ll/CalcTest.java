@@ -98,4 +98,11 @@ public class CalcTest {
 
         assertThat(50).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("10 / 5")
+    public void t14() {
+        int rs = Calc.run2("10 / 5");
+
+        assertThat(2).isEqualTo(rs);
+    }
 }
