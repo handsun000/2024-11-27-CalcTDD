@@ -77,4 +77,11 @@ public class CalcTest {
 
         assertThat(2).isEqualTo(rs);
     }
+    @Test
+    @DisplayName("-3 + 5 = 2")
+    public void t11() {
+        int rs = Calc.run2("-3 + 5");
+
+        assertThat(2).isEqualTo(rs);
+    }
 }
