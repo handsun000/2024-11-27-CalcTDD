@@ -37,12 +37,23 @@ public class Calc {
         List<List<Character>> listCal = new ArrayList<>();
         Stack<Integer> index = new Stack<>();
         boolean flag = false;
+        boolean minus = false;
 
         StringBuilder number = new StringBuilder();
 
         for (int i = 0; i < expr.length(); i++) {
             char e = expr.charAt(i);
-            if (e == ' ') continue;
+            if (e == ' ') {
+                minus = false;
+                continue;
+            }
+            if (minus && Character.isDigit(e)) {
+                number.append("-").append(e);
+                minus = false;
+                if (flag) calsFirst.removeLast();
+                else cals.removeLast();
+                continue;
+            }
 
             if (e == '(') {
                 ch.add(e);
@@ -51,11 +62,12 @@ public class Calc {
                 index.push(numbers.size());
                 flag = true;
             }
-            else if (e == '+' || e == '*') {
+            else if (e == '+' || e == '*' || e == '-') {
                 if (!number.isEmpty()) {
                     numbers.add(Integer.parseInt(number.toString()));
                     number = new StringBuilder();
                 }
+                if (e == '-') minus = true;
                 if (flag) calsFirst.add(e);
                 else cals.add(e);
                 
@@ -101,7 +113,8 @@ public class Calc {
         int num1 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
         int num2 = (index != -1) ? numbers.remove(index) : numbers.removeLast();
 
-        if (cal == '+') numbers.add(num1 + num2);
-        else if (cal == '*') numbers.add(num1 * num2);
+        if (cal == '+') numbers.add(num2 + num1);
+        else if (cal == '*') numbers.add(num2 * num1);
+        else if (cal == '-') numbers.add(num2 - num1);
     }
 }
